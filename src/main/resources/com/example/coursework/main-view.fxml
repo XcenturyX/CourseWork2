@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox id="MainLayoute" fx:id="VBoxMain" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.coursework.MainController">
+   <children>
+      <HBox fx:id="hBoxViewImage">
+         <children>
+            <AnchorPane prefHeight="0" prefWidth="0">
+               <children>
+                  <ImageView fx:id="Pluss" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                  <ImageView fx:id="Minuss" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                  <TextField fx:id="UserText" promptText="Введите текст" visible="false" />
+
+
+                              <ToolBar id="ConfigBar" fx:id="FotoToolBar" orientation="VERTICAL" visible="false">
+                                 <items>
+                                    <Label styleClass="mLabel" text="Красный фильтр" />
+                                    <Slider fx:id="SliderRed" max="0.5" min="-0.5" onMouseClicked="#CustomRed" />
+                                    <Label styleClass="mLabel" text="Синий фильтр" />
+                                    <Slider fx:id="SliderBlue" max="0.5" min="-0.5" onMouseClicked="#CustomBlue" />
+                                    <Label styleClass="mLabel" text="Зеленый фильтр" />
+                                    <Slider fx:id="SliderGreen" max="0.5" min="-0.5" onMouseClicked="#CustomGreen" />
+                                    <Label styleClass="mLabel" text="Яркость" />
+                                    <Slider fx:id="SliderLight" max="0.5" min="-0.5" onMouseClicked="#CustomLight" />
+                                    <Label styleClass="mLabel" text="Насыщеность" />
+                                    <Slider fx:id="SliderSaturation" max="0.5" min="-0.5" onMouseClicked="#CustomSaturation" />
+                                    <Label styleClass="mLabel" text="Теплота" />
+                                    <Slider fx:id="SliderWarm" max="0.5" min="-0.5" onMouseClicked="#CustomWarm" />
+                                 </items>
+                              </ToolBar>
+                  <ImageView fx:id="ColorCircle" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" visible="false" />
+               </children>
+            </AnchorPane>
+             <AnchorPane fx:id="AncPane">
+                 <children>
+                        <ImageView fx:id="workImage" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </AnchorPane>
+
+         </children></HBox>
+      <ToolBar id="FunToolBar" fx:id="MainFunToolBar" nodeOrientation="LEFT_TO_RIGHT" prefHeight="45.0" prefWidth="600.0">
+        <items>
+          <Button mnemonicParsing="false" onAction="#LoudFoto" styleClass="FunBut" text="Загрузить">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Button fx:id="FilterBut" mnemonicParsing="false" styleClass="FunBut" text="Фильтры">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Button fx:id="CorBut" mnemonicParsing="false" onAction="#parametersOn" styleClass="FunBut" text="Коррекция">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <MenuButton fx:id="ScaleBut" mnemonicParsing="false" popupSide="TOP" styleClass="FunBut" text="О/П">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Обрезать" />
+                <MenuItem mnemonicParsing="false" text="Повернуть" />
+              </items>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </MenuButton>
+            <MenuButton fx:id="DrowBut" mnemonicParsing="false" popupSide="TOP" styleClass="FunBut" text="М/Т/Р">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Маски" />
+                <MenuItem mnemonicParsing="false" onAction="#setTextOnFoto" text="Текст" />
+                  <MenuItem mnemonicParsing="false" onAction="#DrowAction" text="Рисование" />
+              </items>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </MenuButton>
+            <Button fx:id="SafeBut" mnemonicParsing="false" onAction="#SafeFoto" styleClass="FunBut" text="Сохранить">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Pane prefHeight="45.0" prefWidth="365.0" />
+            <Button fx:id="ReturneFoto" mnemonicParsing="false" onAction="#ReturnPastFoto" styleClass="FunBut" text="Отмена" />
+        </items>
+      </ToolBar>
+   </children>
+</VBox>

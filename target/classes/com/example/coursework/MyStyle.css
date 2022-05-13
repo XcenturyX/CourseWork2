@@ -1,0 +1,24 @@
+.mLabel{
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: #d8d8d8;
+}
+.FunBut{
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-border-color: #e2e2e2;
+    -fx-border-width: 2;
+    -fx-background-radius: 0;
+    -fx-background-color: #1d1d1d;
+    -fx-font-size: 11pt;
+    -fx-text-fill: #d8d8d8;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+#MainLayoute{
+    -fx-background-color: #1a1a1a;
+}
+#FunToolBar{
+    -fx-background-color: #333333;
+}
+
+#ConfigBar{
+    -fx-background-color: #333333;
+}
