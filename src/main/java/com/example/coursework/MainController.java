@@ -1,5 +1,8 @@
 package com.example.coursework;
 
+import com.example.filtrs.MFiltrs;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -14,6 +17,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -22,13 +27,18 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.stream.Stream;
 
 public class MainController implements Initializable {
     private FileChooser fileChooser=new FileChooser();
     private Stage stage=new Stage();
     private BufferImages bufferImage=new BufferImages();
     private Color colorFromCircl;
-    int count=0;
+    private int count=0;
+    private Label TextFoto;
+    private Rectangle rect;
+    private MFiltrs mFiltrs=new MFiltrs();
+
 
 
 
@@ -77,6 +87,10 @@ public class MainController implements Initializable {
     private ImageView Minuss;
     @FXML
     private TextField UserText;
+    @FXML
+    private Button ButTex;
+    @FXML
+    private ListView<String> ListFilters;
 
 
     @Override
@@ -114,21 +128,36 @@ public class MainController implements Initializable {
         Minuss.setLayoutX(125);
         Minuss.setLayoutY(25);
         Minuss.setImage(image1);
+        ButTex.setPrefWidth(145);
+        ButTex.setPrefHeight(40);
+        ButTex.setLayoutX(5);
+        ButTex.setLayoutY(50);
+
+
+        ListFilters.getItems().add("Запад");
+        ListFilters.getItems().add("Пальма");
+        ListFilters.getItems().add("Луг");
+        ListFilters.getItems().add("Румянец");
+        ListFilters.getItems().add("Кинолента");
+        ListFilters.getItems().add("Черно-Белый");
+        ListFilters.getItems().add("Негатив");
+
 
         CleanScrean();
         DontClick();
-
     }
 
     public void setUserTextInst(){
         UserText.setVisible(true);
         Pluss.setVisible(true);
         Minuss.setVisible(true);
+        ButTex.setVisible(true);
     }
 
     public void CleanScrean(){
+        ListFilters.setVisible(false);
         ToolBarFotoVisibleOff();
-
+        offTextOnFoto();
         centerImage();
         workImage.setX(workImage.getX()-150);
     }
@@ -196,6 +225,7 @@ public class MainController implements Initializable {
         if(inScreen!=null&&inBuf!=null){
             workImage.setImage(inScreen);
             bufferImage.PutImeginn(inBuf);
+            ReturneFoto.setVisible(true);
         }
         else {
             NullPointerFoto();
@@ -230,11 +260,13 @@ public class MainController implements Initializable {
             workImage.setX((workImage.getFitWidth() - w) / 2);
             workImage.setY((workImage.getFitHeight() - h) / 2);
 
+
         }
     }
 
 
     public void parametersOn(ActionEvent actionEvent) {
+        CleanScrean();
         ToolBarFotoVisibleOn();
 
     }
@@ -264,7 +296,6 @@ public class MainController implements Initializable {
             }
         }
         SetFotoInWorKSpace(workImage.getImage(),wImage);
-        ReturneFoto.setVisible(true);
     }
 
     public void CustomRed(MouseEvent mouseEvent) {
@@ -292,7 +323,7 @@ public class MainController implements Initializable {
             }
         }
         SetFotoInWorKSpace(workImage.getImage(),wImage);
-        ReturneFoto.setVisible(true);
+
     }
 
     public void CustomGreen(MouseEvent mouseEvent) {
@@ -320,7 +351,6 @@ public class MainController implements Initializable {
             }
         }
         SetFotoInWorKSpace(workImage.getImage(),wImage);
-        ReturneFoto.setVisible(true);
     }
 
     public void CustomLight(MouseEvent mouseEvent) {
@@ -348,7 +378,7 @@ public class MainController implements Initializable {
             }
         }
         SetFotoInWorKSpace(workImage.getImage(),wImage);
-        ReturneFoto.setVisible(true);
+
     }
 
     public void CustomSaturation(MouseEvent mouseEvent) {
@@ -391,7 +421,7 @@ public class MainController implements Initializable {
             }
         }
         SetFotoInWorKSpace(workImage.getImage(),wImage);
-        ReturneFoto.setVisible(true);
+
     }
 
     public void CustomWarm(MouseEvent mouseEvent) {
@@ -421,7 +451,7 @@ public class MainController implements Initializable {
             }
         }
         SetFotoInWorKSpace(workImage.getImage(),wImage);
-        ReturneFoto.setVisible(true);
+
 
     }
 
@@ -436,40 +466,29 @@ public class MainController implements Initializable {
     }
 
     public void DrowAction(ActionEvent actionEvent) {
-       /* CleanScrean();
-        InputStream Stream = getClass().getResourceAsStream("useFoto/ColorCircle.png");
-        Image image = new Image(Stream);
-        ColorCircle.setImage(image);
-        ColorCircle.setY(20);
-        ColorCircle.setVisible(true);
-        ColorCircle.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                PixelReader pixelReader=ColorCircle.getImage().getPixelReader();
-                colorFromCircl=pixelReader.getColor((int)mouseEvent.getX(),(int)mouseEvent.getY());
-                Image tempImige=workImage.getImage();
-                int width=(int)(tempImige.getWidth());
-                int height=(int) (tempImige.getHeight());
-                WritableImage wImage=new WritableImage(width,height);
-                PixelWriter writer=wImage.getPixelWriter();
-                PixelReader reader=tempImige.getPixelReader();
-                for(int y = 0; y < height; y++) {
-                    for(int x = 0; x < width; x++) {
-                        writer.setColor(x, y, colorFromCircl);
-                    }
-                }
-                SetFotoInWorKSpace(workImage.getImage(),wImage);
-                ReturneFoto.setVisible(true);
-            }
-        });
-*/
+        CleanScrean();
+        setColorCircl();
+
+
     }
 
     public void setTextOnFoto(ActionEvent actionEvent) {
-
+        CleanScrean();
+        setColorCircl();
         setUserTextInst();
-        Label TextFoto=new Label("Hellowwdwfewfw");
+        TextFoto=new Label();
+        TextFoto.setLayoutX(workImage.getX());
+        TextFoto.setLayoutY(workImage.getY());
         TextFoto.setFont(new Font(40));
+        ColorCircle.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                Image tempImige=ColorCircle.getImage();
+                PixelReader reader=tempImige.getPixelReader();
+                colorFromCircl=reader.getColor((int)mouseEvent.getX(),(int)(mouseEvent.getY()-ColorCircle.getY()));
+                TextFoto.setTextFill(colorFromCircl);
+            }
+        });
         Pluss.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -511,5 +530,108 @@ public class MainController implements Initializable {
             }
         });
         AncPane.getChildren().add(TextFoto);
+    }
+    public void setColorCircl(){
+        InputStream Stream = getClass().getResourceAsStream("useFoto/CirColr.jpg");
+        Image image = new Image(Stream);
+        ColorCircle.setImage(image);
+        ColorCircle.setY(hBoxViewImage.getPrefHeight()/3);
+        ColorCircle.setVisible(true);
+
+    }
+    public void offTextOnFoto(){
+        UserText.setVisible(false);
+        Pluss.setVisible(false);
+        Minuss.setVisible(false);
+        ButTex.setVisible(false);
+        ColorCircle.setVisible(false);
+    }
+    public void sText(ActionEvent actionEvent) {
+        TextFoto.setText(UserText.getText());
+    }
+
+    public void SkaleFoto(ActionEvent actionEvent) {
+        Rectgl();
+        AncPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(count%2==0) {
+                   // rect.setVisible(true);
+                    System.out.println();
+                    rect.setX(mouseEvent.getX());
+                    rect.setY(mouseEvent.getY());
+                    count++;
+                }
+                else {
+                    Image tempImige=workImage.getImage();
+                    int width=(int)(rect.getWidth());
+                    int height=(int) (rect.getHeight());
+                    PixelReader reader=tempImige.getPixelReader();
+                    double deltaX=tempImige.getWidth()/(AncPane.getWidth()+AncPane.getLayoutX());
+                    double deltaY=tempImige.getHeight()/AncPane.getPrefHeight();
+                    WritableImage wImage=new WritableImage(reader,(int)((rect.getX()*deltaX)+AncPane.getLayoutX()),(int)(rect.getY()*deltaY),(int)((width*deltaX)+ workImage.getX()),(int)(height*deltaY));
+                    SetFotoInWorKSpace(workImage.getImage(),wImage);
+                    // rect.setVisible(false);
+                    count++;
+/*
+                    System.out.println(count);
+                    System.out.println((int)rect.getX());
+                    System.out.println(mouseEvent.getX());
+                    System.out.println(workImage.getX());
+                    Image tempImige=workImage.getImage();
+                    int width=(int)(rect.getWidth());
+                    int height=(int) (rect.getHeight());
+                    WritableImage wImage=new WritableImage(width,height);
+                    PixelWriter writer=wImage.getPixelWriter();
+                    PixelReader reader=tempImige.getPixelReader();
+                    System.out.println(wImage.getWidth());
+                    System.out.println(wImage.getHeight());
+                    for(int y = 0; y < height; y++) {
+                        for(int x = 0; x < width; x++) {
+                            Color color = reader.getColor((int)(rect.getX()-workImage.getX()+x),(int)rect.getY()+y);
+
+                            writer.setColor(x, y, color);
+                        }
+                    }
+                    System.out.println(rect.getX());
+                    SetFotoInWorKSpace(workImage.getImage(),wImage);
+                   // rect.setVisible(false);
+                    count++;*/
+                }
+            }
+        });
+        AncPane.setOnMouseMoved(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(count%2==1){
+                    rect.setHeight(mouseEvent.getY()-rect.getY());
+                    rect.setWidth(mouseEvent.getX()-rect.getX());
+                }
+            }
+        });
+        AncPane.getChildren().add(rect);
+
+        SetFotoInWorKSpace(workImage.getImage(),workImage.getImage());
+
+
+    }
+    public void Rectgl(){
+        rect=new Rectangle(0,0,0,0);
+        rect.setStroke(Color.BLUE);
+        rect.setStrokeWidth(1);
+        rect.setStrokeLineCap(StrokeLineCap.ROUND);
+        rect.setFill(Color.LIGHTBLUE.deriveColor(0, 1.2, 1, 0.6));
+    }
+
+    public void setFiltrs(ActionEvent actionEvent) {
+        CleanScrean();
+        ListFilters.setVisible(true);
+        ListFilters.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                WritableImage writableImage=mFiltrs.setFiltrs(ListFilters.getSelectionModel().getSelectedItem(),workImage.getImage());
+                SetFotoInWorKSpace(workImage.getImage(),writableImage);
+            }
+        });
     }
 }
