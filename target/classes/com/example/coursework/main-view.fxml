@@ -21,7 +21,7 @@
          <children>
             <AnchorPane prefHeight="0" prefWidth="0">
                <children>
-                  <ListView fx:id="ListFilters" prefHeight="170.0" prefWidth="200.0" visible="false" />
+                  <ListView fx:id="ListFilters" prefHeight="165.0" prefWidth="200.0" visible="false" />
                   <ImageView fx:id="Pluss" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" visible="false" />
                   <ImageView fx:id="Minuss" pickOnBounds="true" preserveRatio="true" visible="false" />
                   <TextField fx:id="UserText" promptText="Введите текст" visible="false" />

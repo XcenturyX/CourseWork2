@@ -43,6 +43,7 @@ public class MainController implements Initializable {
 
 
 
+
     @FXML
     private ImageView workImage;
     @FXML
@@ -467,8 +468,29 @@ public class MainController implements Initializable {
 
     public void DrowAction(ActionEvent actionEvent) {
         CleanScrean();
-        setColorCircl();
+        AnchorPane pn=new AnchorPane();
+        pn.setLayoutX(workImage.getX());
+        pn.setLayoutY(workImage.getY());
+        pn.setPrefWidth(workImage.getFitWidth());
+        pn.setPrefHeight(workImage.getFitHeight());
+        AncPane.getChildren().add(pn);
 
+
+        WritableImage writableImage=new WritableImage((int)workImage.getFitWidth(),(int)workImage.getFitHeight());
+        PixelWriter writer=writableImage.getPixelWriter();
+        pn.setOnMouseMoved(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                Color nColor=new Color(1.0,0,0,1.0);
+                writer.setColor((int)mouseEvent.getX(), (int)mouseEvent.getY(), nColor);
+            }
+        });
+        pn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                SetFotoInWorKSpace(workImage.getImage(),writableImage);
+            }
+        });
 
     }
 
@@ -625,11 +647,12 @@ public class MainController implements Initializable {
 
     public void setFiltrs(ActionEvent actionEvent) {
         CleanScrean();
+        Image nowIm=workImage.getImage();
         ListFilters.setVisible(true);
         ListFilters.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                WritableImage writableImage=mFiltrs.setFiltrs(ListFilters.getSelectionModel().getSelectedItem(),workImage.getImage());
+                WritableImage writableImage=mFiltrs.setFiltrs(ListFilters.getSelectionModel().getSelectedItem(),nowIm);
                 SetFotoInWorKSpace(workImage.getImage(),writableImage);
             }
         });
